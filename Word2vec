@@ -1,0 +1,20 @@
+import gensim,os
+
+class MySentences(object):
+    def __init__(self, dirname):
+        self.dirname = dirname
+ 
+    def __iter__(self):
+        for fname in os.listdir(self.dirname):
+            for line in open(os.path.join(self.dirname, fname)):
+                yield gensim.utils.simple_preprocess(line)
+ 
+sentences = MySentences('/home/deeksha/Downloads/scisumm-corpus-master/data/Training-Set-2016/C90-2039_TRAIN/Documents_TXT/') # a memory-friendly iterator
+print sentences
+model = gensim.models.Word2Vec(sentences)
+#print(model.vocab)
+print(model.most_similar(positive=['copy', 'graph'], negative=['method'], topn=10))
+print(model['graph'])
+print(model.similarity('copy','graph'))
+print(model.doesnt_match("copy graph".split()))
+print(model.most_similar(positive=['paper'],topn=10))
